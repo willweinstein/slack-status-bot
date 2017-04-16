@@ -153,7 +153,6 @@ func Bot_Start() {
 	classesDoneToday := []ScheduleClass{}
 	for {
 		now := Bot_GetNYTimeInUTC()
-		now = now.Add(2*24*time.Hour + 12*time.Hour +45*time.Minute + 4*time.Minute)
 		currentDayNumber := Schedule_GetDayNum(now)
 
 		if !gotEventsForToday {

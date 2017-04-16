@@ -45,6 +45,6 @@ func main() {
 		Management_Init(port)
 	}
 
-	log.Println("yay bot time")
+	log.Println("Starting bot!")
 	Bot_Start()
 }
