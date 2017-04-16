@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const API_MHS_Domain = "https://api-v2.staging2.myhomework.space/"
+const API_MHS_Domain = "https://api-v2.myhomework.space/"
 const API_MHS_FormatTime = "2006-01-02"
 
 var API_MHS_AuthToken string
