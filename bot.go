@@ -149,11 +149,11 @@ func Bot_Start() {
 		log.Println("Warning: Could not find 'Other' class in MyHomeworkSpace.")
 	}
 
-	lastClass := ScheduleClass{}
 	gotEventsForToday := false
+	classesDoneToday := []ScheduleClass{}
 	for {
 		now := Bot_GetNYTimeInUTC()
-		now = now.Add(2*24*time.Hour + 12*time.Hour + time.Hour + 30*time.Minute)
+		now = now.Add(2*24*time.Hour + 12*time.Hour +45*time.Minute + 4*time.Minute)
 		currentDayNumber := Schedule_GetDayNum(now)
 
 		if !gotEventsForToday {
@@ -161,16 +161,15 @@ func Bot_Start() {
 			gotEventsForToday = true
 		}
 
-		foundAClass, class, isCurrentlyIn := Schedule_FindNextClass(schedule, now, currentDayNumber, lastClass)
-		lastClass = class
+		foundAClass, class, isCurrentlyIn := Schedule_FindNextClass(schedule, now, currentDayNumber, classesDoneToday)
 		if isCurrentlyIn {
+			classesDoneToday = append(classesDoneToday, class)
 			Bot_SetStatusToClass(class)
 		} else {
 			if foundAClass {
 				// wait for that class
 				duration := Schedule_GetNormalTime(class.StartTime, now).Sub(now)
 				time.Sleep(duration)
-				lastClass = ScheduleClass{} // reset the last class so it picks up on it
 			} else {
 				// no more classes left, wait for tomorrow
 				midnight, _ := time.Parse("2006-01-02", now.AddDate(0, 0, 1).Format("2006-01-02"))
@@ -184,6 +183,7 @@ func Bot_Start() {
 				now = Bot_GetNYTimeInUTC()
 				currentDayNumber = Schedule_GetDayNum(now)
 				gotEventsForToday = false
+				classesDoneToday = []ScheduleClass{}
 
 				if currentDayNumber == 0 {
 					// it's monday! reset the schedule, otherwise it will get clogged up with build sessions from yesterday

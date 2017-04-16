@@ -53,7 +53,7 @@ func Schedule_GetNormalTime(startTime time.Time, now time.Time) (time.Time) {
 	return startTime.AddDate(now.Year() - startTime.Year(), int(now.Month() - startTime.Month()), now.Day() - startTime.Day())
 }
 
-func Schedule_FindNextClass(schedule Schedule, now time.Time, currentDayNumber int, ignoreClass ScheduleClass) (bool, ScheduleClass, bool) {
+func Schedule_FindNextClass(schedule Schedule, now time.Time, currentDayNumber int, classesDoneToday []ScheduleClass) (bool, ScheduleClass, bool) {
 	earliestClass := ScheduleClass{}
 	earliestClassNormalStartTime := time.Now()
 	foundAClass := false
@@ -65,10 +65,20 @@ func Schedule_FindNextClass(schedule Schedule, now time.Time, currentDayNumber i
 		if now.After(normalStartTime) {
 			// class has started. but has it ended?
 			if endTime.After(now) {
-				if ignoreClass != class {
-					// we're in a class, break out now
-					return true, class, true
+				// is it one of the classes we've already had today?
+				shouldEscape := false
+				for _, classToCheck := range classesDoneToday{
+					if classToCheck == class {
+						// it is! ignore it
+						shouldEscape = true
+						break
+					}
 				}
+				if shouldEscape {
+					continue
+				}
+				// we're in a class, break out now
+				return true, class, true
 			}
 		} else {
 			// class hasn't started yet. is its start time before the earliest one we've found so far?
