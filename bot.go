@@ -48,6 +48,13 @@ func Bot_SetStatusToClass(class ScheduleClass) {
 	})
 }
 
+func Bot_ResetStatus() {
+	API_Slack_UpdateStatus(API_Slack_StatusInfo{
+		"",
+		"",
+	})
+}
+
 func Bot_GetMonday(now time.Time) (string) {
 	for {
 		if now.Weekday() != time.Monday {
@@ -164,6 +171,8 @@ func Bot_Start() {
 		if isCurrentlyIn {
 			classesDoneToday = append(classesDoneToday, class)
 			Bot_SetStatusToClass(class)
+			time.Sleep(class.Duration)
+			Bot_ResetStatus()
 		} else {
 			if foundAClass {
 				// wait for that class
