@@ -40,7 +40,7 @@ func Schedule_GetDayNum(t time.Time) (int) {
 			log.Println(err)
 			return 4
 		}
-		return 3 + (response["friday"].(map[string]interface{})["index"]).(int)
+		return 3 + int((response["friday"].(map[string]interface{})["index"]).(float64))
 	} else if weekday == time.Saturday {
 		return 8
 	} else if weekday == time.Sunday {
