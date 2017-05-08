@@ -78,7 +78,7 @@ func Schedule_FindNextClass(schedule Schedule, now time.Time, currentDayNumber i
 					continue
 				}
 				// we're in a class, break out now
-				return true, class, true
+				return true, class, true, endTime
 			}
 		} else {
 			// class hasn't started yet. is its start time before the earliest one we've found so far?
@@ -90,5 +90,5 @@ func Schedule_FindNextClass(schedule Schedule, now time.Time, currentDayNumber i
 			}
 		}
 	}
-	return foundAClass, earliestClass, false
+	return foundAClass, earliestClass, false, false
 }
