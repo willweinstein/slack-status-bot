@@ -171,7 +171,7 @@ func Bot_Start() {
 		if isCurrentlyIn {
 			classesDoneToday = append(classesDoneToday, class)
 			Bot_SetStatusToClass(class)
-			time.Sleep(time.Until(endTime))
+			time.Sleep(endTime.Sub(time.Now()))
 			Bot_ResetStatus()
 		} else {
 			if foundAClass {
