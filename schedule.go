@@ -90,5 +90,5 @@ func Schedule_FindNextClass(schedule Schedule, now time.Time, currentDayNumber i
 			}
 		}
 	}
-	return foundAClass, earliestClass, false, nil
+	return foundAClass, earliestClass, false, time.Now()
 }
